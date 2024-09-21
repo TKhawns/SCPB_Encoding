@@ -45,7 +45,7 @@ def exactly_k(vars: List[int], weight: List[int], k):
     # (1)
     for i in range(1, n):
         for j in range(1, weight[i] + 1):
-            plus_clause([-1 * vars[i], map_register[i][j]])
+                plus_clause([-1 * vars[i], map_register[i][j]])
 
     # (2)
     for i in range(2, n):
