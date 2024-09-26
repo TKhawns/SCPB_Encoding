@@ -154,9 +154,6 @@ def atLeast_k(vars: List[int], weight: List[int], k):
         if k - weight[n] > 0 and k - weight[n] <= pos_i(n - 1, k, weight):
             cnf.append([map_register[n - 1][k], map_register[n - 1][k - weight[n]]])
 
-    # cnf.append([map_register[n - 1][k], vars[n]])
-    # cnf.append([map_register[n - 1][k], map_register[n - 1][k - weight[n]]])
-
     return id_variable
 
 

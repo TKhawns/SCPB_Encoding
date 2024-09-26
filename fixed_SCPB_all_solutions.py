@@ -174,6 +174,11 @@ def atMost_k(vars: List[int], weight: List[int], k):
     print("Map register:")
     print(map_register)
 
+    # if weight[i] > k, x[i] false
+    for i in range(1,n+1):
+        if weight[i] > k:
+             plus_clause([-vars[i]])
+
     # (1) X_i -> R_i,j for j = 1 to w_i
     for i in range(1, n):
         for j in range(1, weight[i] + 1):
@@ -197,33 +202,26 @@ def atMost_k(vars: List[int], weight: List[int], k):
             plus_clause([-vars[i], -map_register[i - 1][k + 1 - weight[i]]])
 
     #  Find all solutions of At Most Encoding with Set of list solutions
-    solutions_set = set()
+    # solutions_set = set()
     while True:
         if not sat_solver.solve():
             break
 
-        #  Set to check if no new solution found
-        temp_set = solutions_set
-
         solution = sat_solver.get_model()
         print("Solution is: ", solution)
+
         # Array to store index's item of solution[i], add to set solutions
         temp = []
         for i in range (0, n):
             if (solution[i] > 0):
                 temp.append(solution[i])
 
-        solutions_set.add(tuple(temp))
-        print("Set solutions:", solutions_set)
-
-        # if (temp_set == solutions_set and temp_set != {()}):
-        #     break
-
         # Block the current solution
-        blocking_clause = [-lit for lit in solution]
+        blocking_clause = [-lit for lit in  solution[0:10]]
         sat_solver.add_clause(blocking_clause)
 
-    print(solutions_set)
+        print_solution(n)
+
     return n
 
 def print_solution(n):
@@ -242,9 +240,7 @@ def print_solution(n):
 
 # Example usage
 # the first element of the list is not used
-
 # 10X1 + 2X2 + 6X3 + 11X4 + 21X5 + 4X6 + 8X7 + 3X8 + 8X9 + 10X10 = 20
 # n = exactly_k([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [0, 10, 2, 6, 11, 21, 4, 8, 3, 8, 10], 20)
 
-n = atMost_k([0, 1, 2, 3, 4, 5], [0, 392, 181, 6, 3, 285], 20)
-# print_solution(n)
+n = atMost_k([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], [0, 10, 2, 6, 11, 21, 4, 8, 3, 8, 10], 5)
